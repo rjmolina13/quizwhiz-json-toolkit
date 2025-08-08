@@ -22,7 +22,7 @@ jobs:
     - name: Get current version
       id: get-version
       run: |
-        VERSION=$(sed -n '18p' quiz_toolkit.py | grep -o '[0-9]\+\.[0-9]\+' || echo "1.0")
+        VERSION=$(sed -n '18p' quiz_toolkit.py | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' || echo "1.0.0")
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         echo "Current version: $VERSION"
     
@@ -33,7 +33,7 @@ jobs:
         
         # Get the previous version from the last commit
         git checkout HEAD~1 2>/dev/null || echo "No previous commit"
-        PREVIOUS_VERSION=$(sed -n '18p' quiz_toolkit.py 2>/dev/null | grep -o '[0-9]\+\.[0-9]\+' || echo "0.0")
+        PREVIOUS_VERSION=$(sed -n '18p' quiz_toolkit.py 2>/dev/null | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' || echo "0.0.0")
         git checkout ${{ github.sha }}
         
         echo "previous-version=$PREVIOUS_VERSION" >> $GITHUB_OUTPUT
