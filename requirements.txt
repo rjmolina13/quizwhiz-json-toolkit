@@ -1,0 +1,24 @@
+# QuizWhiz JSON Toolkit Requirements
+# Core dependencies for the application
+
+# GUI Framework (usually included with Python)
+# tkinter - Built-in with Python, no separate installation needed
+
+# Build tools (for development)
+pyinstaller>=6.0.0
+
+# Note: This application primarily uses Python standard library modules:
+# - tkinter (GUI)
+# - json (JSON processing)
+# - re (regular expressions)
+# - datetime (date/time handling)
+# - pathlib (file path handling)
+# - threading (background processing)
+# - platform (OS detection)
+# - subprocess (system commands)
+# - argparse (command line parsing)
+# - sys, os (system operations)
+# - quopri (quoted-printable encoding)
+
+# All other dependencies are part of Python's standard library
+# No additional packages required for basic functionality

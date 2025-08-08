@@ -1,0 +1,249 @@
+name: Build and Release QuizWhiz JSON Toolkit
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
+      version-changed: ${{ steps.check-version.outputs.changed }}
+      previous-version: ${{ steps.check-version.outputs.previous-version }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Get current version
+      id: get-version
+      run: |
+        VERSION=$(sed -n '18p' quiz_toolkit.py | grep -o '[0-9]\+\.[0-9]\+' || echo "1.0")
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "Current version: $VERSION"
+    
+    - name: Check if version changed
+      id: check-version
+      run: |
+        CURRENT_VERSION="${{ steps.get-version.outputs.version }}"
+        
+        # Get the previous version from the last commit
+        git checkout HEAD~1 2>/dev/null || echo "No previous commit"
+        PREVIOUS_VERSION=$(sed -n '18p' quiz_toolkit.py 2>/dev/null | grep -o '[0-9]\+\.[0-9]\+' || echo "0.0")
+        git checkout ${{ github.sha }}
+        
+        echo "previous-version=$PREVIOUS_VERSION" >> $GITHUB_OUTPUT
+        echo "Previous version: $PREVIOUS_VERSION"
+        echo "Current version: $CURRENT_VERSION"
+        
+        if [ "$CURRENT_VERSION" != "$PREVIOUS_VERSION" ]; then
+          echo "changed=true" >> $GITHUB_OUTPUT
+          echo "Version changed from $PREVIOUS_VERSION to $CURRENT_VERSION"
+        else
+          echo "changed=false" >> $GITHUB_OUTPUT
+          echo "Version unchanged: $CURRENT_VERSION"
+        fi
+    
+    - name: Update README version
+      if: steps.check-version.outputs.changed == 'true'
+      run: |
+        CURRENT_VERSION="${{ steps.get-version.outputs.version }}"
+        # Update the version in README.md line 18
+        sed -i "18s/v[0-9]\+\.[0-9]\+/v${CURRENT_VERSION}/g" README.md
+        echo "Updated README.md version to v${CURRENT_VERSION}"
+    
+    - name: Commit README version update
+      if: steps.check-version.outputs.changed == 'true'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add README.md
+        git diff --staged --quiet || git commit -m "Update README version to v${{ steps.get-version.outputs.version }}"
+        git push || echo "No changes to push"
+
+  build:
+    needs: check-version
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+        include:
+          - os: windows-latest
+            executable-suffix: '.exe'
+            artifact-name: 'QuizWhiz_JSON_Toolkit_Windows'
+          - os: macos-latest
+            executable-suffix: ''
+            artifact-name: 'QuizWhiz_JSON_Toolkit_macOS'
+          - os: ubuntu-latest
+            executable-suffix: ''
+            artifact-name: 'QuizWhiz_JSON_Toolkit_Linux'
+    
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+        pip install -r requirements.txt
+    
+    - name: Build executable
+      run: |
+        pyinstaller --onefile --windowed --name "QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}" quiz_toolkit.py
+    
+    - name: Rename executable (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        mv "dist/QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}.exe" "dist/QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}_Windows.exe"
+    
+    - name: Rename executable (macOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        mv "dist/QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}" "dist/QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}_macOS"
+    
+    - name: Rename executable (Linux)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        mv "dist/QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}" "dist/QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}_Linux"
+    
+    - name: Generate checksums
+      run: |
+        cd dist
+        if [ "${{ matrix.os }}" = "windows-latest" ]; then
+          certutil -hashfile "QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}_Windows.exe" SHA256 > "QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}_Windows.exe.sha256"
+        elif [ "${{ matrix.os }}" = "macos-latest" ]; then
+          shasum -a 256 "QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}_macOS" > "QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}_macOS.sha256"
+        else
+          sha256sum "QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}_Linux" > "QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}_Linux.sha256"
+        fi
+      shell: bash
+    
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.artifact-name }}
+        path: |
+          dist/QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}_*
+        retention-days: 30
+
+  release:
+    needs: [check-version, build]
+    runs-on: ubuntu-latest
+    if: needs.check-version.outputs.version-changed == 'true' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+    
+    - name: Generate changelog
+      id: changelog
+      run: |
+        CURRENT_VERSION="${{ needs.check-version.outputs.version }}"
+        PREVIOUS_VERSION="${{ needs.check-version.outputs.previous-version }}"
+        
+        echo "## 🚀 QuizWhiz JSON Toolkit v${CURRENT_VERSION}" > RELEASE_CHANGELOG.md
+        echo "" >> RELEASE_CHANGELOG.md
+        echo "### 📋 What's New" >> RELEASE_CHANGELOG.md
+        echo "" >> RELEASE_CHANGELOG.md
+        
+        # Extract changelog from CHANGELOG.md if it exists
+        if [ -f "CHANGELOG.md" ]; then
+          # Get the section for the current version
+          sed -n "/## \[${CURRENT_VERSION}\]/,/## \[/p" CHANGELOG.md | head -n -1 | tail -n +2 >> RELEASE_CHANGELOG.md
+        else
+          echo "- Version ${CURRENT_VERSION} release" >> RELEASE_CHANGELOG.md
+        fi
+        
+        echo "" >> RELEASE_CHANGELOG.md
+        echo "### 📦 Downloads" >> RELEASE_CHANGELOG.md
+        echo "" >> RELEASE_CHANGELOG.md
+        echo "Choose the appropriate executable for your operating system:" >> RELEASE_CHANGELOG.md
+        echo "" >> RELEASE_CHANGELOG.md
+        echo "- **Windows**: \`QuizWhiz-Toolkit_v${CURRENT_VERSION}_Windows.exe\`" >> RELEASE_CHANGELOG.md
+        echo "- **macOS**: \`QuizWhiz-Toolkit_v${CURRENT_VERSION}_macOS\`" >> RELEASE_CHANGELOG.md
+        echo "- **Linux**: \`QuizWhiz-Toolkit_v${CURRENT_VERSION}_Linux\`" >> RELEASE_CHANGELOG.md
+        echo "" >> RELEASE_CHANGELOG.md
+        echo "### 🔐 Verification" >> RELEASE_CHANGELOG.md
+        echo "" >> RELEASE_CHANGELOG.md
+        echo "SHA256 checksums are provided for each executable to verify integrity." >> RELEASE_CHANGELOG.md
+        echo "" >> RELEASE_CHANGELOG.md
+        echo "### 🛠️ Installation" >> RELEASE_CHANGELOG.md
+        echo "" >> RELEASE_CHANGELOG.md
+        echo "1. Download the appropriate executable for your OS" >> RELEASE_CHANGELOG.md
+        echo "2. Make it executable (macOS/Linux): \`chmod +x QuizWhiz-Toolkit_v${CURRENT_VERSION}_*\`" >> RELEASE_CHANGELOG.md
+        echo "3. Run the application" >> RELEASE_CHANGELOG.md
+        echo "" >> RELEASE_CHANGELOG.md
+        echo "### 📚 Documentation" >> RELEASE_CHANGELOG.md
+        echo "" >> RELEASE_CHANGELOG.md
+        echo "For detailed usage instructions, please refer to the [README.md](https://github.com/${{ github.repository }}/blob/main/README.md)." >> RELEASE_CHANGELOG.md
+        
+        # Set output for release body
+        echo "changelog<<EOF" >> $GITHUB_OUTPUT
+        cat RELEASE_CHANGELOG.md >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+    
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ needs.check-version.outputs.version }}
+        name: QuizWhiz JSON Toolkit v${{ needs.check-version.outputs.version }}
+        body: ${{ steps.changelog.outputs.changelog }}
+        draft: false
+        prerelease: false
+        files: |
+          QuizWhiz_JSON_Toolkit_Windows/QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}_Windows.exe
+          QuizWhiz_JSON_Toolkit_Windows/QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}_Windows.exe.sha256
+          QuizWhiz_JSON_Toolkit_macOS/QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}_macOS
+          QuizWhiz_JSON_Toolkit_macOS/QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}_macOS.sha256
+          QuizWhiz_JSON_Toolkit_Linux/QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}_Linux
+          QuizWhiz_JSON_Toolkit_Linux/QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}_Linux.sha256
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  notify:
+    needs: [check-version, build, release]
+    runs-on: ubuntu-latest
+    if: always() && needs.check-version.outputs.version-changed == 'true'
+    
+    steps:
+    - name: Build Summary
+      run: |
+        echo "## 🎉 Build Complete!" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Version**: v${{ needs.check-version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+        echo "**Previous Version**: v${{ needs.check-version.outputs.previous-version }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📦 Built Executables" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Windows executable" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ macOS executable" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Linux executable" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        if [ "${{ needs.release.result }}" = "success" ]; then
+          echo "### 🚀 Release Created" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "A new release has been created with all executables and checksums." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "[📥 Download Release](https://github.com/${{ github.repository }}/releases/tag/v${{ needs.check-version.outputs.version }})" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "### ⚠️ Release Status" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Release creation was skipped or failed. Check the logs for details." >> $GITHUB_STEP_SUMMARY
+        fi

@@ -1,0 +1,124 @@
+# Changelog
+
+All notable changes to the **QuizWhiz JSON Toolkit** will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [4.1] - 2025-08-09
+
+### Fixed
+- 🔧 **GitHub Actions Workflow**: Updated artifact actions from deprecated v3 to v4
+- 🚀 **CI/CD Pipeline**: Resolved workflow failures due to deprecated actions/upload-artifact and actions/download-artifact
+- ⚡ **Build Performance**: Improved upload/download speeds by up to 98% with v4 artifact actions
+
+### Technical Improvements
+- **Workflow Compatibility**: Updated build-release.yml to use latest GitHub Actions
+- **Deprecation Resolution**: Eliminated deprecated v3 artifact actions before January 30th, 2025 deadline
+- **Build Reliability**: Enhanced automated build process stability
+
+## [4.0] - 2025-08-08
+
+### Added
+- 🌞 **Light Mode Command-Line Option**: New `--light-mode` argument to force GUI launch in light mode
+- 🎛️ **Theme Override Control**: Enhanced theme system with manual override capabilities
+- 🎨 **Enhanced Dark Mode Support**: Complete dark theme implementation with automatic Windows theme detection
+- 🔧 **Improved Theme Refresh**: Enhanced theme switching mechanism with widget tree updates
+- 📖 **Improved Help Documentation**: Updated help text with usage examples for new features
+- 🖥️ **Cross-Platform Compatibility**: Improved support for Windows, macOS, and Linux
+- 🎨 **Modern UI Elements**: Enhanced styling for Entry widgets, LabelFrames, and other components
+
+
+### Enhanced
+- **Command-Line Interface**: Extended argument parser with theme control options
+- **GUI Initialization**: Enhanced constructor to accept theme preference parameters
+- **GUI Interface**: Complete redesign with tabbed interface and modern styling
+- **Theme Detection**: Improved theme setup method to respect forced light mode preference
+- **User Experience**: Better control over application appearance regardless of system theme
+
+### Technical Improvements
+- **Code Modularity**: Enhanced separation between theme detection and theme application
+- **Parameter Passing**: Improved argument flow from CLI to GUI components
+- **Documentation**: Added inline examples and usage patterns for new features
+
+## [3.5] - 2025-08-07
+
+### Added
+- 🎯 **Advanced Difficulty Analysis**: Enhanced NLP-based difficulty scoring using Bloom's Taxonomy
+- 📚 **LET Pattern Recognition**: Specialized analysis for Licensure Examination for Teachers questions
+- 🔄 **Smart Duplicate Detection**: Advanced fuzzy matching and semantic similarity analysis
+- 📊 **Comprehensive Logging**: Detailed operation logs and error reporting
+
+### Enhanced
+- **MHTML Extraction**: Improved parsing accuracy for complex Google Forms layouts
+- **JSON Merging**: Better conflict resolution and metadata preservation
+- **Error Handling**: More robust error detection and user-friendly messages
+- **Performance**: Optimized processing for large files and datasets
+
+### Fixed
+- 🐛 **Dark Mode Issues**: Resolved white appearance of Entry widgets and LabelFrame borders
+- 🔧 **Theme Refresh**: Fixed theme application on startup and during runtime
+- 📝 **Variable Scope**: Resolved UnboundLocalError for border_color variable
+- 🎨 **Widget Styling**: Consistent styling across all UI components
+- 🖱️ **Focus States**: Proper focus and selection colors for form elements
+
+### Technical Improvements
+- **Code Organization**: Better separation of concerns and modular design
+- **Documentation**: Comprehensive inline documentation and type hints
+- **Testing**: Enhanced error handling and validation
+- **Build Process**: Automated executable generation with PyInstaller
+
+## [3.4] - Previous Version
+
+### Added
+- Basic GUI interface with tkinter
+- MHTML file extraction capabilities
+- JSON file merging functionality
+- Command-line interface support
+
+### Features
+- Google Forms MHTML parsing
+- Quiz data extraction and formatting
+- Multiple file format support
+- Basic difficulty analysis
+
+## [3.3] - Earlier Version
+
+### Added
+- Initial release of QuizWhiz JSON Toolkit
+- Core extraction and merging functionality
+- Basic command-line interface
+
+---
+
+## Release Notes Format
+
+Each release includes:
+- 🚀 **New Features**: Major additions and capabilities
+- 🔧 **Improvements**: Enhancements to existing functionality
+- 🐛 **Bug Fixes**: Resolved issues and problems
+- 📚 **Documentation**: Updates to guides and documentation
+- ⚡ **Performance**: Speed and efficiency improvements
+- 🔒 **Security**: Security-related updates and fixes
+
+## Version Numbering
+
+This project follows [Semantic Versioning](https://semver.org/):
+- **MAJOR** version for incompatible API changes
+- **MINOR** version for backwards-compatible functionality additions
+- **PATCH** version for backwards-compatible bug fixes
+
+## Contributing
+
+When contributing, please:
+1. Update this CHANGELOG.md with your changes
+2. Follow the established format and categories
+3. Include the date of the release
+4. Use clear, descriptive language for changes
+
+## Links
+
+- [GitHub Repository](https://github.com/rjmolina13/quizwhiz-json-toolkit)
+- [Latest Release](https://github.com/rjmolina13/quizwhiz-json-toolkit/releases/latest)
+- [Issues](https://github.com/rjmolina13/quizwhiz-json-toolkit/issues)
+- [Pull Requests](https://github.com/rjmolina13/quizwhiz-json-toolkit/pulls)
