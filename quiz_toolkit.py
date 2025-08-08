@@ -15,7 +15,7 @@ Author: RubyJ/@rjmolina13
 """
 
 # Application version
-VERSION = "4.4.1"
+VERSION = "4.4.2"
 
 import re
 import quopri
