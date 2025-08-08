@@ -15,7 +15,7 @@ Author: RubyJ/@rjmolina13
 """
 
 # Application version
-VERSION = "4.4.5"
+VERSION = "4.5"
 
 import re
 import quopri
@@ -92,7 +92,11 @@ def analyze_question_difficulty(question_text, options, correct_answer):
                 'known as', 'called', 'refers to', 'means', 'stands for', 'acronym for',
                 # Enhanced recall patterns from Professional Education
                 'which of the following is', 'what does', 'who developed', 'what theory', 'what law',
-                'according to', 'based on', 'the term', 'this refers to', 'is defined as'
+                'according to', 'based on', 'the term', 'this refers to', 'is defined as',
+                # New recall patterns from provided questions
+                'what is the equivalent', 'where is the', 'among areas of study', 'which among areas',
+                'the branch of', 'deals with', 'according to this theory', 'under which category',
+                'which is the scientific study', 'the scientific study of'
             ],
             'score': 1
         },
@@ -140,7 +144,10 @@ def analyze_question_difficulty(question_text, options, correct_answer):
                 'which of the following can be', 'what went wrong', 'is the teacher right',
                 # Enhanced evaluation patterns
                 'most suitable', 'least appropriate', 'not recommended', 'should not',
-                'priority should be', 'first consideration', 'primary concern', 'main focus'
+                'priority should be', 'first consideration', 'primary concern', 'main focus',
+                # New evaluation patterns from provided questions
+                'which is not supportive', 'not supportive of', 'which method is questioned',
+                'questioned for its reliability', 'due to practice and familiarity'
             ],
             'score': 5
         },
@@ -173,7 +180,11 @@ def analyze_question_difficulty(question_text, options, correct_answer):
                 r'what is the', r'who is', r'when did', r'where is', r'which of the following is',
                 r'the name of', r'the largest', r'the smallest', r'the first', r'the last',
                 r'how many', r'what type of', r'what kind of', r'which one', r'the capital of',
-                r'the author of', r'the date of', r'the title of'
+                r'the author of', r'the date of', r'the title of',
+                # New simple factual patterns from provided questions
+                r'what is the equivalent', r'where is the.*located', r'among areas of study',
+                r'which among areas', r'the branch of.*that deals with', r'under which category',
+                r'according to this theory', r'which is.*scientific study'
             ],
             'score': 1
         },
@@ -198,7 +209,9 @@ def analyze_question_difficulty(question_text, options, correct_answer):
                 r'compare.*with', r'contrast.*and', r'difference between', r'similarity between', r'versus',
                 r'most appropriate', r'best describes', r'most suitable', r'least likely',
                 r'most effective', r'better than', r'worse than', r'unlike.*', r'whereas.*',
-                r'on the other hand', r'in contrast to'
+                r'on the other hand', r'in contrast to',
+                # New comparative patterns from provided questions
+                r'which is.*not supportive', r'not supportive of', r'which method is questioned'
             ],
             'score': 3
         },
@@ -242,7 +255,16 @@ def analyze_question_difficulty(question_text, options, correct_answer):
                 # Enhanced Biology basic facts
                 'cell', 'tissue', 'organ', 'system', 'blood', 'heart', 'brain', 'lung',
                 'bone', 'muscle', 'skin', 'eye', 'ear', 'nose', 'mouth', 'tooth', 'teeth',
-                'ribs', 'sternum', 'vertebral column', 'cerebellum', 'aorta', 'ventricle'
+                'ribs', 'sternum', 'vertebral column', 'cerebellum', 'aorta', 'ventricle',
+                # New basic facts from provided questions
+                'cedula personal', 'community tax certificate', 'residence certificate', 'identification card',
+                'barangay clearance', 'vocal cord', 'larynx', 'pharynx', 'esophagus', 'resonator',
+                'immunology', 'physiology', 'cytology', 'ethnology', 'zoology', 'animal behavior',
+                'body defenses', 'disease', 'foreign substances', 'scientific study',
+                'big bang theory', 'universe', 'cosmic explosion', 'eternal inflation',
+                'steady state theory', 'general theory of relativity', 'earth tilt', 'seasons',
+                'hemispheres', 'solstice', 'day and night', 'globe', 'instructional material',
+                'model', 'picture', 'mock up', 'realia'
             ],
             'score': 1
         },
@@ -268,7 +290,11 @@ def analyze_question_difficulty(question_text, options, correct_answer):
                 'photosynthesis', 'respiration', 'evolution', 'genetics', 'ecosystem', 'biodiversity',
                 'glucagon', 'adrenalin', 'insulin', 'thyroxine', 'leukocytes', 'lymphocytes',
                 'erythrocytes', 'cellulose', 'cotyledon', 'hilum', 'meristematic', 'cambium',
-                'epidermis', 'tundra', 'rain forest', 'biome', 'habitat'
+                'epidermis', 'tundra', 'rain forest', 'biome', 'habitat',
+                # New scientific principles from provided questions
+                'peer review', 'regulating science', 'qualified scientists', 'journal publication',
+                'collegial studies', 'competitive inquiry', 'linguistics', 'semantics', 'phonics',
+                'vocabulary', 'syntax', 'meaning of words', 'branch of linguistics'
             ],
             'score': 3
         },
@@ -288,7 +314,11 @@ def analyze_question_difficulty(question_text, options, correct_answer):
                 'test reliability', 'erikson stages', 'maslow hierarchy', 'course objective',
                 'learning climate', 'drta', 'cultural heritage', 'test norms', 'professionalization',
                 'correlation', 'student motivation', 'higher-order thinking', 'vygotsky scaffolding',
-                'real-world connections', 'ict concerns', 'pygmalion effect', 'ripple effect'
+                'real-world connections', 'ict concerns', 'pygmalion effect', 'ripple effect',
+                # New professional education concepts from provided questions
+                'creative thinking', 'open classroom atmosphere', 'authoritative teacher', 'authoritarian teacher',
+                'divergent questions', 'split half', 'equivalent forms', 'test-retest', 'kuder richardson',
+                'reliability', 'practice and familiarity', 'psychometrics'
             ],
             'score': 5  # Increased from 4 to 5
         },
@@ -383,7 +413,12 @@ def analyze_question_difficulty(question_text, options, correct_answer):
         'tundra', 'biome', 'taxonomy', 'classification', 'binomial nomenclature',
         # Filipino linguistic terms
         'pangatnig', 'paglalapi', 'pagbubuo', 'pagkaltas', 'dugtungan',
-        'patotoo', 'pagtanggi', 'talumpati', 'bugtungan'
+        'patotoo', 'pagtanggi', 'talumpati', 'bugtungan',
+        # New technical terms from provided questions
+        'cedula personal', 'community tax certificate', 'immunology', 'physiology', 'cytology',
+        'ethnology', 'zoology', 'peer review', 'semantics', 'linguistics', 'big bang theory',
+        'cosmic explosion', 'earth tilt', 'hemispheres', 'solstice', 'instructional material',
+        'creative thinking', 'authoritarian teacher', 'test-retest', 'psychometrics', 'reliability'
     ]
     
     technical_count = sum(1 for term in technical_terms if term in question_lower)
@@ -443,7 +478,10 @@ def analyze_question_difficulty(question_text, options, correct_answer):
         'antonio de morga', 'sucesos de las islas filipinas', 'spanish regime',
         # Geographic and cultural context
         'luzon', 'pampanga', 'tarlac', 'zambales', 'aetas', 'igorots', 'mangyans',
-        'archipelago', 'bohol', 'pasig', 'magallanes ave'
+        'archipelago', 'bohol', 'pasig', 'magallanes ave',
+        # New Philippine context from provided questions
+        'philippine hispanic era', 'cedula personal', 'community tax certificate',
+        'residence certificate', 'barangay clearance', 'identification card'
     ]
     
     for context in philippine_context:

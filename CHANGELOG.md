@@ -5,6 +5,21 @@ All notable changes to the **QuizWhiz JSON Toolkit** will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.5] - 2025-08-09
+
+### 🚀 Enhanced Features
+- **NLP Difficulty Classification**: Significantly enhanced the difficulty analysis system with new patterns and keywords
+- **Cognitive Indicators**: Added new recall and evaluation patterns for better question classification
+- **Domain Complexity**: Expanded keyword dictionaries with General Education, Science, and Professional Education terms
+- **Pattern Recognition**: Improved recognition of simple factual and comparative analysis question types
+- **Educational Context**: Enhanced support for Philippine educational context and LET-specific terminology
+
+### ⚡ Technical Improvements
+- **Keyword Expansion**: Added 50+ new keywords across basic facts, scientific principles, and educational theory domains
+- **Pattern Matching**: Enhanced regex patterns for better subject and session extraction
+- **Classification Accuracy**: Improved NLP-based difficulty scoring with domain-specific indicators
+- **Professional Education**: Enhanced recognition of assessment methods, reliability measures, and creative thinking patterns
+
 ## [4.4.5] - 2025-08-09
 
 ### 🔧 Fixes

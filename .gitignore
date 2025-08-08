@@ -321,3 +321,5 @@ Andeng/
 *.json
 logs*/
 debug*.py
+GForms/
+process_mhtml_batch.py
