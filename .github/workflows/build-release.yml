@@ -22,7 +22,7 @@ jobs:
     - name: Get current version
       id: get-version
       run: |
-        VERSION=$(sed -n '18p' quiz_toolkit.py | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' || echo "1.0.0")
+        VERSION=$(sed -n '18p' quiz_toolkit.py | grep -o '[0-9]\+\.[0-9]\+\(\.[0-9]\+\)\?' || echo "1.0.0")
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         echo "Current version: $VERSION"
     
@@ -33,7 +33,7 @@ jobs:
         
         # Get the previous version from the last commit
         git checkout HEAD~1 2>/dev/null || echo "No previous commit"
-        PREVIOUS_VERSION=$(sed -n '18p' quiz_toolkit.py 2>/dev/null | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' || echo "0.0.0")
+        PREVIOUS_VERSION=$(sed -n '18p' quiz_toolkit.py 2>/dev/null | grep -o '[0-9]\+\.[0-9]\+\(\.[0-9]\+\)\?' || echo "0.0.0")
         git checkout ${{ github.sha }}
         
         echo "previous-version=$PREVIOUS_VERSION" >> $GITHUB_OUTPUT
@@ -52,18 +52,20 @@ jobs:
       if: steps.check-version.outputs.changed == 'true'
       run: |
         CURRENT_VERSION="${{ steps.get-version.outputs.version }}"
-        # Update the version in README.md line 18
-        sed -i "18s/v[0-9]\+\.[0-9]\+/v${CURRENT_VERSION}/g" README.md
+        # Update the version in README.md line 18 (support both 2-part and 3-part versions)
+        sed -i "18s/v[0-9]\+\.[0-9]\+\(\.[0-9]\+\)\?/v${CURRENT_VERSION}/g" README.md
         echo "Updated README.md version to v${CURRENT_VERSION}"
     
     - name: Commit README version update
       if: steps.check-version.outputs.changed == 'true'
       run: |
+        # Ensure we're on the correct branch
+        git checkout ${{ github.ref_name }} || git checkout -b ${{ github.ref_name }}
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add README.md
         git diff --staged --quiet || git commit -m "Update README version to v${{ steps.get-version.outputs.version }}"
-        git push || echo "No changes to push"
+        git push origin ${{ github.ref_name }} || echo "No changes to push"
 
   build:
     needs: check-version
