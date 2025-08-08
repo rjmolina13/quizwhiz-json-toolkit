@@ -105,14 +105,8 @@ jobs:
     - name: Build executable
       timeout-minutes: 15
       run: |
-        # Update spec file with version-specific name
-        if [[ "${{ matrix.os }}" == "macos-latest" ]]; then
-          sed -i "" "s/name='QuizWhiz-Toolkit'/name='QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}'/g" quiz_toolkit.spec
-        else
-          sed -i "s/name='QuizWhiz-Toolkit'/name='QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}'/g" quiz_toolkit.spec
-        fi
-        # Build using spec file for better optimization
-        pyinstaller quiz_toolkit.spec
+        # Build using direct PyInstaller command (no compression, no spec file)
+        pyinstaller --onefile --windowed --name="QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}" --clean quiz_toolkit.py
     
     - name: Rename executable (Windows)
       if: matrix.os == 'windows-latest'

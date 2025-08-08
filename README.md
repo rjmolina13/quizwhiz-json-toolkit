@@ -15,7 +15,7 @@
     <h1>🎯 QuizWhiz JSON Toolkit</h1>
   </a>
 
-## <div style="text-align: center">QuizWhiz JSON Toolkit <span style="font-size: 0.7em; font-style: italic">*v4.4*</span></div>
+## <div style="text-align: center">QuizWhiz JSON Toolkit <span style="font-size: 0.7em; font-style: italic">*v4.4.1*</span></div>
 
 <div align="center">
   <p>
@@ -127,9 +127,9 @@ To use QuizWhiz JSON Toolkit, you can either download the pre-built executable o
 
 1. Clone the QuizWhiz JSON Toolkit repository to your local machine or [download the latest release](https://github.com/rjmolina13/quizwhiz-json-toolkit/releases).
 2. For executable version: Download the appropriate executable for your operating system:
-   - **Windows**: `QuizWhiz-Toolkit_v4.4_Windows.exe`
-   - **macOS**: `QuizWhiz-Toolkit_v4.4_macOS`
-   - **Linux**: `QuizWhiz-Toolkit_v4.4_Linux`
+   - **Windows**: `QuizWhiz-Toolkit_v4.4.1_Windows.exe`
+- **macOS**: `QuizWhiz-Toolkit_v4.4.1_macOS`
+- **Linux**: `QuizWhiz-Toolkit_v4.4.1_Linux`
 3. For source installation: Ensure you have Python 3.7+ installed on your system.
 4. Install required dependencies:
 
@@ -146,9 +146,9 @@ pip install -r requirements.txt
 
 ```bash
 # For executable (no Python required)
-./QuizWhiz-Toolkit_v4.4_Windows.exe  # Windows
-./QuizWhiz-Toolkit_v4.4_macOS        # macOS
-./QuizWhiz-Toolkit_v4.4_Linux        # Linux
+./QuizWhiz-Toolkit_v4.4.1_Windows.exe  # Windows
+./QuizWhiz-Toolkit_v4.4.1_macOS        # macOS
+./QuizWhiz-Toolkit_v4.4.1_Linux        # Linux
 
 # For source code
 python quiz_toolkit.py
@@ -258,42 +258,44 @@ python -m pip install --upgrade pip
 pip install pyinstaller
 pip install -r requirements.txt
 
-# Build executable using optimized spec file (recommended)
-# First, update the spec file with your desired version
-sed -i "s/name='QuizWhiz-Toolkit'/name='QuizWhiz-Toolkit_v4.4'/g" quiz_toolkit.spec
-pyinstaller quiz_toolkit.spec
-
-# Alternative: Build with command-line options (larger file size)
-# pyinstaller --onefile --windowed --name="QuizWhiz-Toolkit_v4.4" --optimize=2 --strip quiz_toolkit.py
+# Build executable with PyInstaller
+pyinstaller --onefile --windowed --name "QuizWhiz-Toolkit_v4.4.1" --clean quiz_toolkit.py
 
 # The executable will be created in the dist/ directory
-
-### 📦 Executable Size Optimization
-
-The QuizWhiz JSON Toolkit executable has been optimized to reduce file size:
-
-- **Optimized build**: ~9.7MB (using spec file with exclusions)
-- **Standard build**: ~9.9MB (basic PyInstaller command)
-- **Unoptimized**: ~12-15MB (with all modules included)
-
-**Optimization techniques applied:**
-- Excluded unused Python modules (PIL, matplotlib, numpy, etc.)
-- Enabled maximum Python bytecode optimization (`--optimize=2`)
-- Stripped debug symbols (`--strip`)
-- Used custom spec file for granular control
-- Disabled UPX compression (prevents compatibility issues)
-
-**Note**: The executable size is primarily due to:
-- Python interpreter (~4-5MB)
-- Tkinter GUI framework (~3-4MB)
-- Application code and dependencies (~1-2MB)
-
-**Reality Check**: Python GUI applications with PyInstaller typically range from 8-15MB due to the embedded Python runtime and GUI framework. Our optimizations achieve meaningful reductions while maintaining full functionality.
-# For platform-specific naming:
-# Windows: QuizWhiz-Toolkit_v4.4_Windows.exe
-# macOS: QuizWhiz-Toolkit_v4.4_macOS
-# Linux: QuizWhiz-Toolkit_v4.4_Linux
 ```
+
+**Alternative: Use the automated build script (recommended)**  
+```bash
+python build_local.py
+```
+
+The `build_local.py` script provides:
+- Automatic version detection from `quiz_toolkit.py`
+- Platform-specific executable naming
+- SHA256 checksum generation
+- Build progress tracking and error handling
+- Cross-platform compatibility
+
+---
+
+### 📦 Executable Information
+
+The QuizWhiz JSON Toolkit executable is built using **PyInstaller**.
+
+- **Typical size:** ~10 MB  
+- **Build approach:** Direct PyInstaller command for simplicity and compatibility
+
+**Note:** The executable size is primarily due to:
+- Python interpreter (~4–5 MB)
+- Tkinter GUI framework (~3–4 MB)
+- Application code and dependencies (~2–3 MB)
+
+Python GUI applications built with PyInstaller typically range from **8–15 MB** due to the embedded Python runtime and GUI framework.
+
+**Platform-specific naming:**
+- **Windows:** `QuizWhiz-Toolkit_v4.4.1_Windows.exe`
+- **macOS:** `QuizWhiz-Toolkit_v4.4.1_macOS`
+- **Linux:** `QuizWhiz-Toolkit_v4.4.1_Linux`
 
 ### Automated Builds
 
@@ -319,6 +321,7 @@ quizwhiz-json-toolkit/
 │   └── workflows/
 │       └── build-release.yml # CI/CD workflow
 ├── .gitignore              # Git ignore rules
+├── build_local.py          # Local build script
 ├── CHANGELOG.md            # Version history
 ├── LICENSE                 # MIT License
 ├── README.md               # This file
@@ -427,7 +430,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 <!-- CONTACT -->
 ## Contact
 
-**RubyJ** - [@rjmolina13](https://github.com/rjmolina13) - rj.molina13.2@gmail.com
+**RubyJ** - [@rjmolina13](https://github.com/rjmolina13) - rj.molina13@gmail.com
 
 Project Link: [https://github.com/rjmolina13/quizwhiz-json-toolkit](https://github.com/rjmolina13/quizwhiz-json-toolkit)
 
@@ -449,7 +452,7 @@ Project Link: [https://github.com/rjmolina13/quizwhiz-json-toolkit](https://gith
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[version-shield]: https://img.shields.io/badge/version-4.4-blue.svg
+[version-shield]: https://img.shields.io/badge/version-4.4.1-blue.svg
 [version-url]: https://github.com/rjmolina13/quizwhiz-json-toolkit/releases
 [license-shield]: https://img.shields.io/badge/license-MIT-green.svg
 [license-url]: https://github.com/rjmolina13/quizwhiz-json-toolkit/blob/main/LICENSE

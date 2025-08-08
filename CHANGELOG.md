@@ -5,6 +5,19 @@ All notable changes to the **QuizWhiz JSON Toolkit** will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.4.1] - 2025-08-09
+
+### 🔧 Fixes
+- **Build Process**: Simplified build process by removing spec file dependency and compression settings
+- **Compatibility**: Improved build reliability by using direct PyInstaller commands instead of spec files
+- **Maintenance**: Streamlined build scripts for better maintainability and faster builds
+
+### ⚡ Technical Improvements
+- **Build Simplification**: Replaced spec file usage with direct PyInstaller command-line options
+- **GitHub Actions**: Updated workflow to use direct PyInstaller commands for consistency
+- **Local Builds**: Simplified `build_local.py` script by removing spec file manipulation
+- **Documentation**: Updated README.md to reflect simplified build process
+
 ## [4.4] - 2025-08-09
 
 ### 🔧 Fixes
