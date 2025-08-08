@@ -10,6 +10,8 @@ on:
 jobs:
   check-version:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     outputs:
       version: ${{ steps.get-version.outputs.version }}
       version-changed: ${{ steps.check-version.outputs.changed }}
@@ -58,6 +60,7 @@ jobs:
     
     - name: Commit README version update
       if: steps.check-version.outputs.changed == 'true'
+      continue-on-error: true
       run: |
         # Ensure we're on the correct branch
         git checkout ${{ github.ref_name }} || git checkout -b ${{ github.ref_name }}
@@ -65,7 +68,7 @@ jobs:
         git config --local user.name "GitHub Action"
         git add README.md
         git diff --staged --quiet || git commit -m "Update README version to v${{ steps.get-version.outputs.version }}"
-        git push origin ${{ github.ref_name }} || echo "No changes to push"
+        git push origin ${{ github.ref_name }} || echo "No changes to push - this is expected if GitHub Actions doesn't have write permissions"
 
   build:
     needs: check-version
