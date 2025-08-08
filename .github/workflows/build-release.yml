@@ -139,7 +139,7 @@ jobs:
   release:
     needs: [check-version, build]
     runs-on: ubuntu-latest
-    if: needs.check-version.outputs.version-changed == 'true' && github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     permissions:
       contents: write
     
@@ -219,7 +219,7 @@ jobs:
   notify:
     needs: [check-version, build, release]
     runs-on: ubuntu-latest
-    if: always() && needs.check-version.outputs.version-changed == 'true'
+    if: always()
     
     steps:
     - name: Build Summary

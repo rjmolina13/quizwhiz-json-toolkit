@@ -15,8 +15,8 @@ Author: RubyJ/@rjmolina13
 """
 
 # Application version
-VERSION = "4.1"
-# v4.1 to test and trigger Github Worklow file 
+VERSION = "4.2"
+# v4.2 to test and trigger Github Worklow file 
 
 import re
 import quopri

@@ -15,7 +15,7 @@
     <h1>🎯 QuizWhiz JSON Toolkit</h1>
   </a>
 
-## <div style="text-align: center">QuizWhiz JSON Toolkit <span style="font-size: 0.7em; font-style: italic">*v4.1*</span></div>
+## <div style="text-align: center">QuizWhiz JSON Toolkit <span style="font-size: 0.7em; font-style: italic">*v4.2*</span></div>
 
 <div align="center">
   <p>
@@ -129,9 +129,9 @@ To use QuizWhiz JSON Toolkit, you can either download the pre-built executable o
 
 1. Clone the QuizWhiz JSON Toolkit repository to your local machine or [download the latest release](https://github.com/rjmolina13/quizwhiz-json-toolkit/releases).
 2. For executable version: Download the appropriate executable for your operating system:
-   - **Windows**: `QuizWhiz-Toolkit_v4.1_Windows.exe`
-   - **macOS**: `QuizWhiz-Toolkit_v4.1_macOS`
-   - **Linux**: `QuizWhiz-Toolkit_v4.1_Linux`
+   - **Windows**: `QuizWhiz-Toolkit_v4.2_Windows.exe`
+   - **macOS**: `QuizWhiz-Toolkit_v4.2_macOS`
+   - **Linux**: `QuizWhiz-Toolkit_v4.2_Linux`
 3. For source installation: Ensure you have Python 3.7+ installed on your system.
 4. Install required dependencies:
 
@@ -148,9 +148,9 @@ pip install -r requirements.txt
 
 ```bash
 # For executable (no Python required)
-./QuizWhiz-Toolkit_v4.1_Windows.exe  # Windows
-./QuizWhiz-Toolkit_v4.1_macOS        # macOS
-./QuizWhiz-Toolkit_v4.1_Linux        # Linux
+./QuizWhiz-Toolkit_v4.2_Windows.exe  # Windows
+./QuizWhiz-Toolkit_v4.2_macOS        # macOS
+./QuizWhiz-Toolkit_v4.2_Linux        # Linux
 
 # For source code
 python quiz_toolkit.py
@@ -260,14 +260,14 @@ python -m pip install --upgrade pip
 pip install pyinstaller
 pip install -r requirements.txt
 
-# Build executable with version (replace 4.1 with current version)
-pyinstaller --onefile --windowed --name="QuizWhiz-Toolkit_v4.1" quiz_toolkit.py
+# Build executable with version (replace 4.2 with current version)
+pyinstaller --onefile --windowed --name="QuizWhiz-Toolkit_v4.2" quiz_toolkit.py
 
 # The executable will be created in the dist/ directory
 # For platform-specific naming:
-# Windows: QuizWhiz-Toolkit_v4.1_Windows.exe
-# macOS: QuizWhiz-Toolkit_v4.1_macOS
-# Linux: QuizWhiz-Toolkit_v4.1_Linux
+# Windows: QuizWhiz-Toolkit_v4.2_Windows.exe
+# macOS: QuizWhiz-Toolkit_v4.2_macOS
+# Linux: QuizWhiz-Toolkit_v4.2_Linux
 ```
 
 ### Automated Builds
@@ -448,7 +448,7 @@ Project Link: [https://github.com/rjmolina13/quizwhiz-json-toolkit](https://gith
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[version-shield]: https://img.shields.io/badge/version-4.1-blue.svg
+[version-shield]: https://img.shields.io/badge/version-4.2-blue.svg
 [version-url]: https://github.com/rjmolina13/quizwhiz-json-toolkit/releases
 [license-shield]: https://img.shields.io/badge/license-MIT-green.svg
 [license-url]: https://github.com/rjmolina13/quizwhiz-json-toolkit/blob/main/LICENSE

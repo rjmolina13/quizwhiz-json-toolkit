@@ -5,6 +5,18 @@ All notable changes to the **QuizWhiz JSON Toolkit** will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.2] - 2025-08-09
+
+### Fixed
+- 🔧 **GitHub Actions Workflow**: Modified release and notify jobs to proceed without version change requirements
+- 🚀 **CI/CD Pipeline**: Enhanced workflow flexibility for manual releases and re-releases
+- ⚡ **Release Process**: Improved automated release creation with proper permissions
+
+### Technical Improvements
+- **Workflow Flexibility**: Removed version-change dependency for release and notify jobs
+- **Release Automation**: Enhanced GitHub Actions to support releases regardless of version changes
+- **Build Reliability**: Improved workflow execution with contents: write permissions
+
 ## [4.1] - 2025-08-09
 
 ### Fixed

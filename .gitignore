@@ -320,3 +320,4 @@ settings.local.py
 Andeng/
 *.json
 logs*/
+debug*.py
