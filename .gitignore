@@ -321,3 +321,4 @@ Andeng/
 *.json
 logs*/
 debug*.py
+build*.py

@@ -5,7 +5,20 @@ All notable changes to the **QuizWhiz JSON Toolkit** will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [4.2] - 2025-08-09
+## [Unreleased]
+
+## [4.3] - 2024-12-19
+
+### 🔧 Fixes
+- **Executable Size**: Optimized PyInstaller build process to reduce file size from ~9.9MB to ~9.7MB
+- **Build Process**: Enhanced build configuration with custom spec file for better optimization
+
+### ⚡ Technical Improvements
+- **Size Optimization**: Added custom PyInstaller spec file with module exclusions and optimization flags
+- **Build Efficiency**: Excluded unused modules (PIL, matplotlib, numpy, etc.) and enabled maximum optimization
+- **Documentation**: Updated build instructions and added comprehensive size optimization guide
+
+## [4.2] - 2024-12-19
 
 ### Fixed
 - 🔧 **GitHub Actions Workflow**: Modified release and notify jobs to proceed without version change requirements
