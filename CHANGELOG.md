@@ -5,6 +5,19 @@ All notable changes to the **QuizWhiz JSON Toolkit** will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.4] - 2025-08-09
+
+### 🔧 Fixes
+- **GitHub Actions**: Fixed build failures by updating `quiz_toolkit.spec` and improving `sed` command compatibility
+- **Build Process**: Enhanced workflow with proper timeouts and platform-specific handling
+- **Version Management**: Optimized version change detection and build triggering
+
+### ⚡ Technical Improvements
+- **CI/CD Pipeline**: Added pip caching and increased timeouts to prevent build cancellations
+- **Cross-Platform**: Implemented platform-specific `sed` commands for macOS and other systems
+- **Build Efficiency**: Added conditional builds that only run when version changes are detected
+- **Error Handling**: Improved error detection and recovery in automated builds
+
 ## [4.3] - 2025-08-09
 
 ### 🔧 Fixes

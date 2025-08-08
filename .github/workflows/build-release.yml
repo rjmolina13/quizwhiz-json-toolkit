@@ -67,6 +67,8 @@ jobs:
 
   build:
     needs: check-version
+    if: needs.check-version.outputs.changed == 'true'
+    timeout-minutes: 30
     strategy:
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]
@@ -90,17 +92,25 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
+        cache: 'pip'
+        cache-dependency-path: 'requirements.txt'
     
     - name: Install dependencies
+      timeout-minutes: 10
       run: |
         python -m pip install --upgrade pip
         pip install pyinstaller
         pip install -r requirements.txt
     
     - name: Build executable
+      timeout-minutes: 15
       run: |
         # Update spec file with version-specific name
-        sed -i "s/name='QuizWhiz-Toolkit'/name='QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}'/g" quiz_toolkit.spec
+        if [[ "${{ matrix.os }}" == "macos-latest" ]]; then
+          sed -i "" "s/name='QuizWhiz-Toolkit'/name='QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}'/g" quiz_toolkit.spec
+        else
+          sed -i "s/name='QuizWhiz-Toolkit'/name='QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}'/g" quiz_toolkit.spec
+        fi
         # Build using spec file for better optimization
         pyinstaller quiz_toolkit.spec
     

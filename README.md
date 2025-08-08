@@ -15,7 +15,7 @@
     <h1>🎯 QuizWhiz JSON Toolkit</h1>
   </a>
 
-## <div style="text-align: center">QuizWhiz JSON Toolkit <span style="font-size: 0.7em; font-style: italic">*v4.3*</span></div>
+## <div style="text-align: center">QuizWhiz JSON Toolkit <span style="font-size: 0.7em; font-style: italic">*v4.4*</span></div>
 
 <div align="center">
   <p>
@@ -54,9 +54,7 @@
     <li><a href="#usage">Usage</a></li>
     <li><a href="#advanced-features">Advanced Features</a></li>
     <li><a href="#development">Development</a></li>
-        <li><a href="#screenshots">Screenshots</a></li>
-        <li><a href="#screenshots">Screenshots</a></li>
-        <li><a href="#screenshots">Screenshots</a></li>
+    <li><a href="#screenshots">Screenshots</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -129,9 +127,9 @@ To use QuizWhiz JSON Toolkit, you can either download the pre-built executable o
 
 1. Clone the QuizWhiz JSON Toolkit repository to your local machine or [download the latest release](https://github.com/rjmolina13/quizwhiz-json-toolkit/releases).
 2. For executable version: Download the appropriate executable for your operating system:
-   - **Windows**: `QuizWhiz-Toolkit_v4.3_Windows.exe`
-   - **macOS**: `QuizWhiz-Toolkit_v4.3_macOS`
-   - **Linux**: `QuizWhiz-Toolkit_v4.3_Linux`
+   - **Windows**: `QuizWhiz-Toolkit_v4.4_Windows.exe`
+   - **macOS**: `QuizWhiz-Toolkit_v4.4_macOS`
+   - **Linux**: `QuizWhiz-Toolkit_v4.4_Linux`
 3. For source installation: Ensure you have Python 3.7+ installed on your system.
 4. Install required dependencies:
 
@@ -148,9 +146,9 @@ pip install -r requirements.txt
 
 ```bash
 # For executable (no Python required)
-./QuizWhiz-Toolkit_v4.3_Windows.exe  # Windows
-./QuizWhiz-Toolkit_v4.3_macOS        # macOS
-./QuizWhiz-Toolkit_v4.3_Linux        # Linux
+./QuizWhiz-Toolkit_v4.4_Windows.exe  # Windows
+./QuizWhiz-Toolkit_v4.4_macOS        # macOS
+./QuizWhiz-Toolkit_v4.4_Linux        # Linux
 
 # For source code
 python quiz_toolkit.py
@@ -262,11 +260,11 @@ pip install -r requirements.txt
 
 # Build executable using optimized spec file (recommended)
 # First, update the spec file with your desired version
-sed -i "s/name='QuizWhiz-Toolkit'/name='QuizWhiz-Toolkit_v4.3'/g" quiz_toolkit.spec
+sed -i "s/name='QuizWhiz-Toolkit'/name='QuizWhiz-Toolkit_v4.4'/g" quiz_toolkit.spec
 pyinstaller quiz_toolkit.spec
 
 # Alternative: Build with command-line options (larger file size)
-# pyinstaller --onefile --windowed --name="QuizWhiz-Toolkit_v4.3" --optimize=2 --strip quiz_toolkit.py
+# pyinstaller --onefile --windowed --name="QuizWhiz-Toolkit_v4.4" --optimize=2 --strip quiz_toolkit.py
 
 # The executable will be created in the dist/ directory
 
@@ -292,9 +290,9 @@ The QuizWhiz JSON Toolkit executable has been optimized to reduce file size:
 
 **Reality Check**: Python GUI applications with PyInstaller typically range from 8-15MB due to the embedded Python runtime and GUI framework. Our optimizations achieve meaningful reductions while maintaining full functionality.
 # For platform-specific naming:
-# Windows: QuizWhiz-Toolkit_v4.3_Windows.exe
-# macOS: QuizWhiz-Toolkit_v4.3_macOS
-# Linux: QuizWhiz-Toolkit_v4.3_Linux
+# Windows: QuizWhiz-Toolkit_v4.4_Windows.exe
+# macOS: QuizWhiz-Toolkit_v4.4_macOS
+# Linux: QuizWhiz-Toolkit_v4.4_Linux
 ```
 
 ### Automated Builds
@@ -335,30 +333,6 @@ quizwhiz-json-toolkit/
 [⬆️ Back to top](#quizwhiz-json-toolkit)
 
 <!-- CONTRIBUTING -->
-
-### Google Form MHTML Extraction
-![Extract Tab](docs/screenshots/extract_tab.png)
-*Google Form MHTML extraction interface for processing Google Forms files*
-
-### JSON Output Merger
-![JSON Merge Tab](docs/screenshots/json_merge_tab.png)
-*JSON Output Merger interface for combining multiple quiz files*
-
-### QuizWhiz JSON Backup Merger
-![Backup Merger Tab](docs/screenshots/backup_merger_tab.png)
-*QuizWhiz JSON Backup Merger interface for integrating with QuizWhiz backups*
-
-### JSON Transformer
-![Transformer Tab](docs/screenshots/transformer_tab.png)
-*JSON Transformer interface for advanced JSON structure transformation*
-
-### Dark Mode
-![Dark Mode](docs/screenshots/dark_mode.png)
-*Dark mode interface for comfortable usage*
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- SCREENSHOTS -->
 ## Screenshots
@@ -475,7 +449,7 @@ Project Link: [https://github.com/rjmolina13/quizwhiz-json-toolkit](https://gith
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[version-shield]: https://img.shields.io/badge/version-4.3-blue.svg
+[version-shield]: https://img.shields.io/badge/version-4.4-blue.svg
 [version-url]: https://github.com/rjmolina13/quizwhiz-json-toolkit/releases
 [license-shield]: https://img.shields.io/badge/license-MIT-green.svg
 [license-url]: https://github.com/rjmolina13/quizwhiz-json-toolkit/blob/main/LICENSE
