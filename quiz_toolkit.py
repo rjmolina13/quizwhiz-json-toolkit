@@ -15,7 +15,7 @@ Author: RubyJ/@rjmolina13
 """
 
 # Application version
-VERSION = "4.5"
+VERSION = "4.6"
 
 import re
 import quopri
@@ -689,23 +689,113 @@ def extract_quiz_from_mhtml(mhtml_file, deck_name, output_file, verbose=False, p
     if progress_callback:
         progress_callback("Extracting HTML content...")
 
-    # Extract HTML content
+    # Extract HTML content using robust multi-strategy approach
+    decoded_html = None
+    extraction_strategy = None
+    
+    # Strategy 1: Try the original approach (works for most files)
     html_match = re.search(r'Content-Type: text/html.*?\n\n(.*?)(?=\n--)', content, re.DOTALL)
     if html_match:
         html_content = html_match.group(1)
-        # Decode quoted-printable
         try:
             decoded_html = quopri.decodestring(html_content.encode()).decode('utf-8', errors='ignore')
+            qr7oae_count = len(re.findall(r'Qr7Oae', decoded_html))
+            if qr7oae_count > 0:
+                extraction_strategy = "Strategy 1 (Original)"
+                if verbose:
+                    print(f"{Colors.OKGREEN}Strategy 1 success: Found {qr7oae_count} Qr7Oae in main HTML section{Colors.ENDC}")
         except Exception as e:
-            error_msg = f"Error decoding HTML content: {e}"
             if verbose:
-                print(f"{Colors.FAIL}{error_msg}{Colors.ENDC}")
-            return None, error_msg
-    else:
-        error_msg = f"Could not extract HTML from {mhtml_file}"
+                print(f"{Colors.WARNING}Strategy 1 decode error: {e}{Colors.ENDC}")
+    
+    # Strategy 2: Find the largest quoted-printable section with Google Forms content
+    if not decoded_html or len(re.findall(r'Qr7Oae', decoded_html)) == 0:
+        if verbose:
+            print(f"{Colors.OKCYAN}Strategy 1 failed, trying Strategy 2: Find largest section with Forms content{Colors.ENDC}")
+        
+        # Find all potential quoted-printable sections (between boundaries)
+        boundary_pattern = r'\n--[^\n]*\n'
+        boundaries = list(re.finditer(boundary_pattern, content))
+        
+        best_section = None
+        best_score = 0
+        best_decoded = None
+        
+        # Check each section between boundaries
+        for i in range(len(boundaries) - 1):
+            section_start = boundaries[i].end()
+            section_end = boundaries[i + 1].start()
+            section_content = content[section_start:section_end]
+            
+            # Skip if section is too small or doesn't look like HTML
+            if len(section_content) < 1000:
+                continue
+                
+            # Try to decode as quoted-printable
+            try:
+                decoded = quopri.decodestring(section_content.encode()).decode('utf-8', errors='ignore')
+                
+                # Score based on Google Forms indicators
+                qr7oae_count = len(re.findall(r'Qr7Oae', decoded))
+                m7eme_count = len(re.findall(r'M7eMe', decoded))
+                adtyne_count = len(re.findall(r'aDTYNe', decoded))
+                
+                score = qr7oae_count * 10 + m7eme_count * 5 + adtyne_count
+                
+                if verbose and score > 0:
+                    print(f"  Section {i+1}: {len(decoded):,} chars, Qr7Oae={qr7oae_count}, M7eMe={m7eme_count}, aDTYNe={adtyne_count}, Score={score}")
+                
+                if score > best_score:
+                    best_score = score
+                    best_section = section_content
+                    best_decoded = decoded
+                    
+            except Exception as e:
+                continue
+        
+        if best_decoded and best_score > 0:
+            decoded_html = best_decoded
+            extraction_strategy = f"Strategy 2 (Score: {best_score})"
+            if verbose:
+                print(f"{Colors.OKGREEN}Strategy 2 success: Using section with score {best_score}{Colors.ENDC}")
+    
+    # Strategy 3: If no good sections found, try decoding the entire file
+    if not decoded_html or len(re.findall(r'Qr7Oae', decoded_html)) == 0:
+        if verbose:
+            print(f"{Colors.OKCYAN}Strategy 2 failed, trying Strategy 3: Decode entire file{Colors.ENDC}")
+        
+        try:
+            # Look for the main content area (after the first few boundaries)
+            boundary_pattern = r'\n--[^\n]*\n'
+            boundaries = list(re.finditer(boundary_pattern, content))
+            
+            if len(boundaries) > 2:
+                # Try the section after the second boundary (often contains main content)
+                main_start = boundaries[1].end()
+                main_end = boundaries[-2].start() if len(boundaries) > 3 else len(content)
+                main_content = content[main_start:main_end]
+                
+                decoded = quopri.decodestring(main_content.encode()).decode('utf-8', errors='ignore')
+                qr7oae_count = len(re.findall(r'Qr7Oae', decoded))
+                
+                if qr7oae_count > 0:
+                    decoded_html = decoded
+                    extraction_strategy = "Strategy 3 (Main content area)"
+                    if verbose:
+                        print(f"{Colors.OKGREEN}Strategy 3 success: Found {qr7oae_count} Qr7Oae in main content area{Colors.ENDC}")
+        except Exception as e:
+            if verbose:
+                print(f"{Colors.WARNING}Strategy 3 error: {e}{Colors.ENDC}")
+    
+    # Final check - if still no valid HTML content found
+    if not decoded_html or len(re.findall(r'Qr7Oae', decoded_html)) == 0:
+        error_msg = f"Could not extract Google Forms content from {mhtml_file}. No valid HTML sections found with quiz data."
         if verbose:
             print(f"{Colors.FAIL}{error_msg}{Colors.ENDC}")
         return None, error_msg
+    
+    if verbose and extraction_strategy:
+        print(f"{Colors.OKGREEN}Using {extraction_strategy} for HTML extraction{Colors.ENDC}")
 
     if progress_callback:
         progress_callback("Finding question blocks...")

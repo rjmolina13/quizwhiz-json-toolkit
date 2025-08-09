@@ -5,6 +5,19 @@ All notable changes to the **QuizWhiz JSON Toolkit** will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.6] - 2025-08-09
+### 🚀 Enhanced Features
+- **Robust MHTML Extraction**: Implemented multi-strategy MHTML parsing to handle different file structures
+- **Improved Compatibility**: Enhanced extraction logic now successfully processes MHTML files with non-standard HTML section layouts
+- **Better Error Handling**: Added comprehensive fallback strategies for MHTML content extraction
+- **Enhanced Logging**: Improved verbose output with detailed strategy information during extraction process
+
+### ⚡ Technical Improvements
+- **Multi-Strategy Parsing**: Added three-tier extraction approach (Original → Section Scoring → Main Content Area)
+- **Google Forms Detection**: Enhanced pattern matching for Qr7Oae, M7eMe, and aDTYNe indicators
+- **Boundary Analysis**: Improved MHTML boundary detection and section parsing
+- **Backward Compatibility**: Maintained full compatibility with existing functionality while adding robust extraction
+
 ## [4.5] - 2025-08-09
 
 ### 🚀 Enhanced Features

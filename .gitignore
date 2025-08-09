@@ -323,3 +323,4 @@ logs*/
 debug*.py
 GForms/
 process_mhtml_batch.py
+test*.py
