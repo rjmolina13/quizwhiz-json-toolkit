@@ -15,7 +15,7 @@ Author: RubyJ/@rjmolina13
 """
 
 # Application version
-VERSION = "4.6"
+VERSION = "4.6.5"
 
 import re
 import quopri
@@ -3529,6 +3529,11 @@ Examples:
     else:
         # GUI mode (default)
         try:
+            # Hide console window on Windows when running GUI mode
+            if platform.system() == 'Windows' and getattr(sys, 'frozen', False):
+                import ctypes
+                ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
+            
             root = tk.Tk()
             app = QuizToolkitGUI(root, force_light_mode=args.light_mode)
             root.mainloop()

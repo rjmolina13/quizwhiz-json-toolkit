@@ -55,10 +55,10 @@ def run_pyinstaller(version):
         executable_name = build_executable_name(version)
         
         # PyInstaller command with direct options (no compression, no spec file)
+        # Removed --windowed to allow console output and command line arguments
         cmd = [
             'pyinstaller',
             '--onefile',
-            '--windowed',
             f'--name={executable_name}',
             '--clean',
             'quiz_toolkit.py'

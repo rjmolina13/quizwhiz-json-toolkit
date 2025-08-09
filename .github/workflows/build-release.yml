@@ -111,7 +111,8 @@ jobs:
       timeout-minutes: 15
       run: |
         # Build using direct PyInstaller command (no compression, no spec file)
-        pyinstaller --onefile --windowed --name="QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}" --clean quiz_toolkit.py
+        # Removed --windowed to allow console output and command line arguments
+        pyinstaller --onefile --name="QuizWhiz-Toolkit_v${{ needs.check-version.outputs.version }}" --clean quiz_toolkit.py
     
     - name: Rename executable (Windows)
       if: matrix.os == 'windows-latest'

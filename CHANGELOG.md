@@ -5,6 +5,17 @@ All notable changes to the **QuizWhiz JSON Toolkit** will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.6.5] - 2025-08-09
+### 🔧 Fixes
+- **Build Process**: Updated GitHub Actions workflow to remove `--windowed` flag from PyInstaller command
+- **CLI Support**: Ensured executables properly handle command-line arguments and console output
+- **Cross-Platform**: Improved executable compatibility across Windows, macOS, and Linux platforms
+
+### ⚡ Technical Improvements
+- **PyInstaller Configuration**: Aligned CI/CD build process with local build script for consistency
+- **Console Handling**: Automatic console window management - hidden for GUI mode, visible for CLI operations
+- **Build Reliability**: Enhanced build process reliability by removing windowed mode restrictions
+
 ## [4.6] - 2025-08-09
 ### 🚀 Enhanced Features
 - **Robust MHTML Extraction**: Implemented multi-strategy MHTML parsing to handle different file structures
